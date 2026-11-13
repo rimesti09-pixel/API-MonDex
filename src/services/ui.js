@@ -1,5 +1,6 @@
 export function displayDigimons(digimons){
-    const container =document.getElementById("digimon-container");
+    const container =document.getElementById("grid");
+
     if (!container){
         console.error("Erreur: Le conteneur #digimon-container est introuvable !");
         return;
@@ -7,14 +8,19 @@ export function displayDigimons(digimons){
 }
 
 container.innerHTML="";
-digimons.array.forEach(digimon => {
+
+if (!Array.isArray(digimons)){
+    return;
+}
+
+digimons.forEach(digimon => {
     const card=document.createElement("div");
     card.classList.add("digimon-card");
 
     card.innerHTML=`
-    <img scr="${digimon.image}" alt="${digimon.name}">
+    <img src="${digimon.image}" alt="${digimon.name}">
     <h3>${digimon.name}</h3>
-    <P>Niveau: ${digimon.level || 'Inconnu'}</p>
+    <P>ID : #${digimon.id}</p>
     `;
     container.appendChild(card);   
 });
