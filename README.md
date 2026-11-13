@@ -1,97 +1,31 @@
-DigiDex · Mon Univers Digimon
-​Un projet d'encyclopédie interactive (Dex) dédiée à l'univers Digimon, développé dans le cadre de la formation Simplon avec HTML5, Tailwind CSS et JavaScript (ES6+).
+# DigiDex · Dex connecté à l'API Digimon
 
+Application web qui affiche les Digimon depuis l'API **Digi-API** (https://digi-api.com).
 
-​*** Liens du Projet
+Site en ligne : LIEN_GITHUB_PAGES
 
-​Dépôt GitHub : https://github.com/rimesti09-pixel/monDex
-​Projet en ligne (GitHub Pages) : https://rimesti09-pixel.github.io/monDex/
+## Fonctionnalités
+- Liste de 20 Digimon par page, bouton « Charger plus »
+- Recherche par nom exact et bouton « Effacer »
+- Détail d'un Digimon au clic (image, type, description, barres de statistiques)
+- Les 4 états : chargement, succès, vide, erreur avec bouton « Réessayer »
+- Favoris (LocalStorage) avec filtre « Favoris »
+- Dernière recherche conservée (SessionStorage)
+- Filtre par type (sur les Digimon déjà chargés)
 
+## Rôle des fichiers
+- `src/services/api.js` : appels à l'API (fetch) et transformation du JSON en objets simples
+- `src/services/storage.js` : LocalStorage (favoris) et SessionStorage (dernière recherche)
+- `src/services/ui.js` : affichage (cartes, détail, chargement, vide, erreur)
+- `src/services/main.js` : point de départ, écoute les clics et appelle les autres fichiers
 
+## Lancer le projet
+1. `npm install`
+2. `npm run build` (compile Tailwind)
+3. Ouvrir `index.html` avec Live Server
 
-​**** Univers et Thème Visuel
+## Remarque sur les statistiques
+Digi-API ne fournit pas de PV/Attaque/Défense. Les barres affichent le nombre de skills, d'évolutions et d'attributs.
 
-​Univers choisi : Digimon
-​Types / Attributs : Vaccine, Data, Virus
-​Palette de couleurs :
-​Couleur principale (Brand) : Bleu (#0070F3)
-​Accentuation : Orange (#FF6B00)
-​Fond & Textes : Fond clair (#F8FAFC) et texte foncé (#0F172A)
-
-
-​**** Source des Images et Crédits
-
-​Toutes les images des créatures utilisées dans ce projet proviennent de :
-​Digimon Wiki (Fandom / Wikimon) : https://digimon.fandom.com/
-
-
-​***Fonctionnalités Réalisées
-
-​Génération dynamique : La grille des créatures est générée automatiquement à partir du fichier data.js.
-​Consultation des détails : Affichage dynamique des statistiques (PV, Attaque, Défense) avec des barres de progression au clic sur n'importe quelle carte.
-​Recherche & Filtrage combinés :
-​Recherche par nom ou ID en temps réel.
-​Filtrage par type (Vaccine, Data, Virus, Tous).
-​Gestion de l'équipe ("Mon équipe") :
-​Ajout et suppression via la délégation d'événements (Event Delegation).
-​Limite maximale fixée à 6 créatures avec message d'alerte en cas de dépassement ou de doublon.
-​Formulaire d'ajout sécurisé : Validation stricte des données à l'aide d'expressions régulières (Regex) avec feedback visuel en temps réel.
-
-
-​**** Tests des Expressions Régulières (Regex)
-​Conformément aux exigences du brief, chaque champ du formulaire de création a été validé avec son expression régulière. Voici les tests d'au moins 2 valeurs valides et 2 valeurs invalides :
-
-   =>    ​1. Identifiant (ID)
-
-​Pattern : /^#\d{3}$/
-​Explication : Doit commencer par # suivi de exactement 3 chiffres.
-​Valeurs Valides :
-​#013 🟢 (Format correct)
-​#999 🟢 (Format correct)
-​Valeurs Invalides :
-​013 🔴 (Manque le symbole #)
-​#12 🔴 (Contient 2 chiffres au lieu de 3)
-
-=>    ​2. Nom (Name)
-
-​Pattern : /^[A-Za-zÀ-ÿ0-9][A-Za-zÀ-ÿ0-9 '.-]{1,29}$/
-​Explication : 2 à 30 caractères, lettres, chiffres, espaces, tirets et points autorisés.
-​Valeurs Valides :
-​Agumon 🟢 (Valide)
-​Greymon-X 🟢 (Valide)
-​Valeurs Invalides :
-​A 🔴 (Moins de 2 caractères)
-​<script> 🔴 (Symboles non autorisés)
-
-  =>    ​3. Statistiques (Stats : PV, Attaque, Défense)
-
-​Pattern : /^\d{1,3}$/
-​Explication : Nombre entier compris entre 0 et 999.
-​Valeurs Valides :
-​450 🟢 (Valide)
-​0 🟢 (Valide)
-​Valeurs Invalides :
-​1000 🔴 (Dépasse 3 chiffres)
-​-50 🔴 (Nombre négatif non autorisé)
-
-     =>       ​4. Lien de l'image (URL)
-
-​Pattern : /^https:\/\/\S+\.(png|jpe?g|webp|gif)$/i
-​Explication : URL sécurisée (HTTPS) se terminant par une extension d'image valide.
-​Valeurs Valides :
-​https://static.wikia.nocookie.net/digimon/agumon.png 🟢 (Valide)
-​https://site.com/image.jpg 🟢 (Valide)
-​Valeurs Invalides :
-​http://site.com/image.png 🔴 (HTTP au lieu de HTTPS)
-​https://site.com/document.pdf 🔴 (Extension non autorisée)
-
-    =>     ​5. Description
-
-​Pattern : /^[\s\S]{10,200}$/
-​Explication : Texte contenant entre 10 et 200 caractères.
-​Valeurs Valides :
-​Un Digimon Reptile de niveau Rookie. 🟢 (36 caractères)
-​Un grand dinosaure cracheur de feu. 🟢 (35 caractères)
-​Valeurs Invalides :
-​Court 🔴 (Moins de 10 caractères)
-🔴 (Trop long)
+## Bonus
+Aucun.
