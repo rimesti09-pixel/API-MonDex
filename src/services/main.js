@@ -33,11 +33,6 @@ loadMoreBtn.textContent = "Charger plus";
 loadMoreBtn.className = "self-start border-2 border-ink px-5 py-2 rounded-xl font-bold hover:bg-ink hover:text-white transition";
 filters.insertAdjacentElement("afterend", loadMoreBtn);
 
-const favBtn = document.createElement("button");
-favBtn.type = "button";
-favBtn.textContent = "Favoris";
-favBtn.className = filters.querySelectorAll("button")[1].className;
-filters.appendChild(favBtn);
 
 function setBusy(value) {
   busy = value;
@@ -56,8 +51,22 @@ function getErrorMessage(error) {
   }
   return "Pas de connexion ou serveur en panne.";
 }
-
+function buildFilters() {
+  const types = [...new Set(allCreatures.map((c) => c.type))];
+  const names = ["Tous", ...types, "Favoris"];
+  filters.className = "flex flex-wrap gap-2";
+  filters.innerHTML = names
+    .map((name) => {
+      const cls =
+        name === currentFilter
+          ? "chip bg-ink text-white border-ink shrink-0 px-4 py-2 rounded-full font-bold"
+          : "chip shrink-0 px-3 py-1.5 rounded-full border-2 border-line hover:border-brand transition";
+      return `<button type="button" class="${cls}">${name}</button>`;
+    })
+    .join("");
+}
 function render() {
+    buildFilters();
   let list = allCreatures;
   if (searchResult !== null) {
     list = searchResult;
@@ -178,16 +187,11 @@ document.getElementById("detail").addEventListener("click", (e) => {
   }
 });
 
-const filterButtons = document.querySelectorAll("#filters button");
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterButtons.forEach((b) => {
-      b.className = "chip shrink-0 px-3 py-1.5 rounded-full border-2 border-line hover:border-brand transition";
-    });
-    btn.className = "chip bg-ink text-white border-ink shrink-0 px-4 py-2 rounded-full font-bold";
-    currentFilter = btn.textContent.trim();
-    render();
-  });
+filters.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+  currentFilter = btn.textContent.trim();
+  render();
 });
 
 searchBtn.addEventListener("click", search);
